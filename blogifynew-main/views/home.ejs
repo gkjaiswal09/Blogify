@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/head') %>
+    <title>Blogify - Discover Amazing Stories</title>
+  </head>
+  <body>
+    <%- include('partials/nav') %>
+    
+    <!-- Hero Section -->
+    <section class="hero-section neon-hero bg-grid">
+      <div class="container position-relative">
+        <h1 class="fade-in gradient-text bebas" style="font-size:3.6rem;">BIG IDEAS FOR QUIET HEARTS</h1>
+        <p class="fade-in hero-subtitle">Your private studio for thoughts and feelings. Minimal noise. Maximum clarity.</p>
+        <% if (locals.user) { %>
+          <a href="/blog/add-new" class="btn btn-light btn-lg mt-3 fade-in btn-glow">Begin a New Entry</a>
+        <% } else { %>
+          <a href="/user/signup" class="btn btn-light btn-lg mt-3 fade-in btn-glow">Create Your Sanctuary</a>
+        <% } %>
+        <div class="hero-orbs">
+          <span class="orb"></span>
+          <span class="orb"></span>
+          <span class="orb"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Aesthetic Sections -->
+    <div class="container section">
+      <!-- <div class="home-header d-flex align-items-center justify-content-between">
+        <h2 class="home-title mb-0">Latest News</h2>
+        <div class="chips d-none d-md-flex">
+          <span class="chip active">All</span>
+          <span class="chip">Poetry</span>
+          <span class="chip">Reflections</span>
+          <span class="chip">Memories</span>
+          <span class="chip">Letters</span>
+        </div>
+      </div> -->
+
+      <!-- Featured Row -->
+      <div class="row mt-3 g-3">
+        <div class="col-lg-8">
+          <% const featured = blogs[0]; %>
+          <% if (featured) { %>
+            <div class="featured-card">
+              <img class="featured-img" src="<%= featured.coverImageURL %>" alt="<%= featured.title %>">
+              <div class="featured-content">
+                <div class="text-uppercase small text-muted mb-2">FEATURED</div>
+                <h3 class="featured-title"><%= featured.title %></h3>
+                <p class="featured-excerpt">
+                  <%= (featured.body || '').substring(0, 180) %>...
+                </p>
+                <a class="btn btn-primary btn-glow mt-2" href="/blog/<%= featured.slug || featured._id %>">View Article</a>
+              </div>
+            </div>
+          <% } %>
+        </div>
+        <div class="col-lg-4">
+          <div class="mini-cards">
+            <% blogs.slice(1,5).forEach(function(b){ %>
+              <a class="mini-card-link" href="/blog/<%= b.slug || b._id %>">
+                <div class="mini-card">
+                  <img class="mini-card-img" src="<%= b.coverImageURL %>" alt="<%= b.title %>">
+                  <div class="mini-card-body">
+                    <div class="mini-card-title"><%= b.title %></div>
+                  </div>
+                </div>
+              </a>
+            <% }) %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary Grid -->
+      <div class="news-grid mt-4">
+        <% blogs.slice(5).forEach(function(b){ %>
+          <div class="card">
+            <img src="<%= b.coverImageURL %>" class="card-img-top" alt="<%= b.title %>">
+            <div class="card-body">
+              <h5 class="card-title"><%= b.title %></h5>
+              <p class="card-text"><%= (b.body || '').substring(0, 120) %>...</p>
+              <a href="/blog/<%= b.slug || b._id %>" class="btn btn-outline-primary">View Article</a>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+
+      <% if (blogs.length === 0) { %>
+        <div class="text-center py-5">
+          <h3 class="text-muted">No entries yet</h3>
+          <p class="text-muted">Be the first to write.</p>
+          <% if (locals.user) { %>
+            <a href="/blog/add-new" class="btn btn-primary btn-glow">Write Your First Entry</a>
+          <% } else { %>
+            <a href="/user/signup" class="btn btn-primary btn-glow">Create Your Sanctuary</a>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+
+    <%- include('./partials/footer') %>
+    <%- include('./partials/scripts') %>
+  </body>
+</html>
